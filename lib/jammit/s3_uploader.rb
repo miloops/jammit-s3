@@ -71,7 +71,7 @@ module Jammit
           use_gzip = true
           remote_path = remote_path.gsub(/\.gz$/, "")
         end
-        
+
         # check if the file already exists on s3
         begin
           obj = @bucket.objects.find_first(remote_path)
@@ -79,7 +79,7 @@ module Jammit
           obj = nil
         end
 
-        # if the object does not exist, or if the MD5 Hash / etag of the 
+        # if the object does not exist, or if the MD5 Hash / etag of the
         # file has changed, upload it
         if !obj || (obj.etag != Digest::MD5.hexdigest(File.read(local_path)))
 
@@ -97,8 +97,6 @@ module Jammit
             log "File changed and will be invalidated in cloudfront: #{remote_path}"
             @changed_files << remote_path
           end
-        else
-          log "file has not changed: #{remote_path}"
         end
       end
     end
@@ -118,7 +116,7 @@ module Jammit
         bucket
       end
     end
-    
+
     def invalidate_cache(files)
       paths = ""
       files.each do |key|
